@@ -26,20 +26,26 @@ func IniciarConfiguracion(filePath string) *globals.Config {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	defer configFile.Close()
-
+	defer configFile.Close() //cerramos el archivo al finalizar la funcion
+	log.Println("Hola, soy un log")
 	jsonParser := json.NewDecoder(configFile)
 	jsonParser.Decode(&config)
 
 	return config
 }
 
-func LeerConsola() {
+func LeerConsola() []string {
 	// Leer de la consola
 	reader := bufio.NewReader(os.Stdin)
+	var ret []string
 	log.Println("Ingrese los mensajes")
 	text, _ := reader.ReadString('\n')
-	log.Print(text)
+	for text != "\n" {
+		ret = append(ret, text)
+		log.Print(text)
+		text, _ = reader.ReadString('\n')
+	}
+	return ret
 }
 
 func GenerarYEnviarPaquete() {
